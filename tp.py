@@ -27,8 +27,7 @@ month_filter = 0
 for month in range(len(df.count())):
     month_filter = month_filter+1
     plt.suptitle(names[month])
-    plt.xlabel('Jours de ')
+    plt.xlabel('Jours de ' + names[month])
     plt.ylabel('Température (°C)')
-    print(df.iloc[:, month_filter])
     plt.plot(df.iloc[:, month_filter])
     plt.show()
