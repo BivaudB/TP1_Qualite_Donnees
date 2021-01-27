@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import mplcursors
 
 data_climat = pd.read_excel("./graph/Climat.xlsx",sheet_name='SI ')
 df = pd.DataFrame(data_climat)
@@ -21,13 +22,29 @@ plt.show()
 
 #Min et Max
 min_max = df.agg(["min","max"])
+print(min_max)
 
-#Courbe pour chaque mois
+#Courbe pour chaque mois et annuel
 month_filter = 0
-for month in range(len(df.count())):
+liste = []
+for month in range(len(df.count())-1):
+    plt.suptitle(names[month_filter])
     month_filter = month_filter+1
-    plt.suptitle(names[month])
-    plt.xlabel('Jours de ' + names[month])
+    plt.xlabel('Jours')
     plt.ylabel('Température (°C)')
     plt.plot(df.iloc[:, month_filter])
+    mplcursors.cursor()
     plt.show()
+    for day in range(len(df.iloc[:, month_filter])):
+        plt.xlabel('Jours de l\'année')
+        plt.ylabel('Température (°C)')
+        liste.append(df.iloc[day, month_filter])
+plt.plot(liste)
+mplcursors.cursor()
+plt.show()
+    
+# Année
+# plt.xlabel('Jours')
+# plt.ylabel('Température (°C)')
+# plt.plot(df.iloc[:, 1:13])
+# plt.show()
