@@ -21,8 +21,8 @@ ax1.bar(names,average)
 ax1.set_title('Moyenne des mois')
 
 #Ecart-type
-ecart_type = df.std(axis=0,skipna=True)
-ax2.bar(names,ecart_type)
+st_deviation = df.std(axis=0,skipna=True)
+ax2.bar(names,st_deviation)
 ax2.set_title('Ecart-type des mois')
 plt.show()
 
