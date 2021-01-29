@@ -179,6 +179,6 @@ mplcursors.cursor()
 plt.show()
 ```
 
-* Aperçu de la **ce résultat** :
+* Aperçu de **ce résultat** : Moscou
 
 ![plot](./img_readme/resultat_ville_mystere.png)
