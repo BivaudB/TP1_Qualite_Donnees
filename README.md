@@ -1,5 +1,7 @@
 # TP1_Qualite_Donnees
 
+Avant toute chose, veuillez penser à dézipper le csv qui se trouve dans le dossier graph puis dans le zip city_temperature.csv.zip
+
 ## Installation des librairies
 
 * Scipy
