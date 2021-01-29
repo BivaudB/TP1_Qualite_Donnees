@@ -3,8 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import mplcursors
 
-data_climat = pd.read_excel("./graph/Climat.xlsx",sheet_name='SI ')
+data_climat = pd.read_excel("./graph/Climat.xlsx",sheet_name='SI ',index_col=0)
 df = pd.DataFrame(data_climat)
+
 
 fig, (ax1, ax2) = plt.subplots(2)
 names = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
@@ -21,30 +22,72 @@ ax2.set_title('Ecart-type des mois')
 plt.show()
 
 #Min et Max
-min_max = df.agg(["min","max"])
-print(min_max)
+min = df.min()
+max = df.max()
+plt.plot(min,color="blue",label='Minimum')
+plt.plot(max,color="red",label='Maximum')
+plt.xlabel('Mois')
+plt.ylabel('Température (°C)')
+plt.title("Minimum et maximum")
+legend = plt.legend(loc='lower right', shadow=True, fontsize='x-large')
+legend.get_frame().set_facecolor('C0')
+plt.show()
 
 #Courbe pour chaque mois et annuel
 month_filter = 0
 liste = []
-for month in range(len(df.count())-1):
+for month in range(len(df.count())):
     plt.suptitle(names[month_filter])
-    month_filter = month_filter+1
     plt.xlabel('Jours')
     plt.ylabel('Température (°C)')
     plt.plot(df.iloc[:, month_filter])
     mplcursors.cursor()
     plt.show()
-    for day in range(len(df.iloc[:, month_filter])):
+    month_filter += 1
+    for day in range(len(df.iloc[:, month_filter-1])):
         plt.xlabel('Jours de l\'année')
         plt.ylabel('Température (°C)')
-        liste.append(df.iloc[day, month_filter])
+        liste.append(df.iloc[day, month_filter-1])
+        liste = [x for x in liste if str(x) != 'nan']
+plt.title('Evolution annuelle de la température')
 plt.plot(liste)
 mplcursors.cursor()
 plt.show()
-    
-# Année
-# plt.xlabel('Jours')
-# plt.ylabel('Température (°C)')
-# plt.plot(df.iloc[:, 1:13])
-# plt.show()
+
+#Recherche d'une capital ressemblant à notre ville mystère
+df_capitale = pd.read_csv("./graph/city_temperature.csv")
+df_capitale = df_capitale.drop_duplicates()
+
+#Suppression des données inutiles
+df_capitale = df_capitale[df_capitale.Day != 0]
+df_capitale = df_capitale[df_capitale.Year == 2018]
+df_capitale = df_capitale[df_capitale.Region == 'Europe']
+df_capitale = df_capitale.drop(['Region','State','Year'],1)
+
+#Récupération de la capitale la plus proche niveau température avec la ville mystère
+df_capitale["AvgTemperature"] = (df_capitale["AvgTemperature"] - 32)/1.8
+temp_mini = 100
+ville = ""
+for i in df_capitale.groupby("City") :
+    df_city = pd.DataFrame(i[1])
+    curr_temp = list(df_city.groupby("Month")['AvgTemperature'].mean())
+    index = 0
+    total_temp = 0
+    for temp in curr_temp :
+        total_temp += abs(average[index]-temp)
+        index +=1
+    if(temp_mini > total_temp) :
+        temp_mini = total_temp
+        ville = i[0]
+print(str(ville) +' '+ str(temp_mini))
+chosen_one = df_capitale[df_capitale.City == ville]
+chosen_one['Jours'] = range(1, len(chosen_one) + 1)
+chosen_one.plot(x ='Jours', y='AvgTemperature',label=ville,color='black')
+plt.plot(liste,label='Notre ville mystère',color='red')
+plt.xlabel('Jours de l\'année')
+plt.ylabel('Température (°C)')
+legend = plt.legend(loc='lower right', shadow=True, fontsize='x-large')
+legend.get_frame().set_facecolor('C0')
+mplcursors.cursor()
+plt.show()
+

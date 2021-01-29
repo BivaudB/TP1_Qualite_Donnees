@@ -28,6 +28,7 @@ plt.show()
 
 #Min et Max
 min_max = df.agg(["min","max"])
+print(min_max)
 
 #Courbe pour chaque mois
 month_filter = 0
