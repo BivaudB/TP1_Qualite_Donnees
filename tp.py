@@ -94,6 +94,7 @@ df_capitale = df_capitale.drop(['Region','State','Year'],1)
 df_capitale["AvgTemperature"] = (df_capitale["AvgTemperature"] - 32)/1.8
 temp_mini = 100
 ville = ""
+ranking_city = []
 for i in df_capitale.groupby("City") :
     df_city = pd.DataFrame(i[1])
     curr_temp = list(df_city.groupby("Month")['AvgTemperature'].mean())
@@ -105,6 +106,12 @@ for i in df_capitale.groupby("City") :
     if(temp_mini > total_temp) :
         temp_mini = total_temp
         ville = i[0]
+        ranking_city.append([ville,temp_mini])
+        df = pd.DataFrame(ranking_city, columns =['City', 'Diff °C'])
+ax = df.plot.bar(x='City', y='Diff °C', rot=0)
+plt.title('Classement des villes selon la différence de température')
+mplcursors.cursor()
+plt.show()   
 print(str(ville) +' '+ str(temp_mini))
 chosen_one = df_capitale[df_capitale.City == ville]
 chosen_one['Jours'] = range(1, len(chosen_one) + 1)
