@@ -114,6 +114,16 @@ for month in range(len(df.count())):
 
 Les **données corrigés** restent globalement proches des valeurs sans erreur, avec quelques exceptions.
 
+# Comparaison avec Savukoski Kirkonkyla
+
+Nous avons ensuite comparé la courbe de notre ville mystère avec celle de Savukoski Kirkonkyla.
+
+On peut voir que les courbes sont assez proche en température. Savukoski Kirkonkyla est une ville nordique donc on peut en déduire que notre ville mystère est une ville avec un climat de type continental.
+
+![plot](./img_readme/savukoski_kirkonkyla.png)
+
+On se rend aussi compte que la différence de moyenne de température est d'à peu près 54 degrés sur tout l'année 
+
 ## Recherche de la ville selon la température
 
 Nous avons récupéré un jeu de données regroupant les **températures** de **chaque jour depuis 1995** pour tout un ensemble de **villes** à partir de ce [lien kaggle](https://www.kaggle.com/sudalairajkumar/daily-temperature-of-major-cities)
