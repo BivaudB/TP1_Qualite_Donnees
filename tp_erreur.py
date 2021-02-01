@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import mplcursors
 
-data_climat = pd.read_excel("./graph/Climat.xlsx",sheet_name='SI -erreur')
+data_climat = pd.read_excel("./graph/Climat.xlsx",sheet_name='SI -erreur', usecols="B:M")
 df = pd.DataFrame(data_climat)
 
 # Correction des valeurs en erreur
@@ -11,6 +11,12 @@ for month in range(len(df.count())):
     for day in range(len(df.iloc[:, month])):
         if df.iloc[day, month] == "0xFFFF" or df.iloc[day, month] == "Sun":
             df.iloc[day, month] = (df.iloc[day-1, month] + df.iloc[day+1, month])/2
+
+for month in range(len(df.count())):
+    average_month = np.mean(df.iloc[:, month])
+    for day in range(len(df.iloc[:, month])):
+        if np.abs(average_month-df.iloc[day, month]) > 15:
+            df.iloc[day, month] = (df.iloc[day+1, month] + df.iloc[day-1, month])/2
 
 fig, (ax1, ax2) = plt.subplots(2)
 names = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
