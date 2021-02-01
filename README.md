@@ -118,7 +118,7 @@ Les **données corrigés** restent globalement proches des valeurs sans erreur, 
 
 Nous avons ensuite comparé la courbe de notre ville mystère avec celle de Savukoski Kirkonkyla.
 
-On peut voir que les courbes sont assez proche en température. Savukoski Kirkonkyla est une ville nordique donc on peut en déduire que notre ville mystère est une ville avec un climat de type continental.
+On peut voir que les courbes sont assez proche en température à certains endroits. Savukoski Kirkonkyla est une ville nordique donc on peut en déduire que notre ville mystère est une ville avec un climat de type continental.
 
 ![plot](./img_readme/savukoski_kirkonkyla.png)
 
