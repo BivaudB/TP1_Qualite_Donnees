@@ -69,8 +69,6 @@ mplcursors.cursor()
 plt.show()
 
 #Différence de moyenne de température sur l'année
-temp_mini = 100
-ville = ""
 for i in df_savukoski:
     curr_temp = list(df_savukoski.groupby("m")['Air temperature (degC)'].mean())
     index = 0
