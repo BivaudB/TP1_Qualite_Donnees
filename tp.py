@@ -106,6 +106,10 @@ for i in df_capitale.groupby("City") :
         temp_mini = total_temp
         ville = i[0]
 print(str(ville) +' '+ str(temp_mini))
+for day in range(len(df_capitale.iloc[:, 4])):
+    if df_capitale.iloc[day, 4] < -50 :
+        df_capitale.iloc[day, 4] = (df_capitale.iloc[day+1, 4] + df_capitale.iloc[day-1, 4])/2
+
 chosen_one = df_capitale[df_capitale.City == ville]
 chosen_one['Jours'] = range(1, len(chosen_one) + 1)
 chosen_one.plot(x ='Jours', y='AvgTemperature',label=ville,color='black')
