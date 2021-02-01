@@ -118,9 +118,32 @@ Les **données corrigés** restent globalement proches des valeurs sans erreur, 
 
 Nous avons ensuite comparé la courbe de notre ville mystère avec celle de Savukoski Kirkonkyla.
 
+Importation des données présente dans la feuille **Observation data** :
+```python
+    data_savukoski = pd.read_excel("./graph/Savukoski kirkonkyla.xlsx",sheet_name='Observation data')
+```
+
+Création des deux courbes sur l'année :
+```python
+    df_savukoski.plot(x ='Jours', y='Air temperature (degC)',label='Savukoski Kirkonkyla', color='black')
+    plt.plot(liste,label='Notre ville mystère',color='red')
+```
+
+Différence de moyenne de température sur l'année
+```python
+    for i in df_savukoski:
+        curr_temp = list(df_savukoski.groupby("m")['Air temperature (degC)'].mean())
+        index = 0
+        total_temp = 0
+        for temp in curr_temp :
+            total_temp += abs(average[index]-temp)
+            index +=1
+    print('Diff = ' + str(total_temp) + ' °C')
+```
+![plot](./img_readme/savukoski_kirkonkyla.png)
+
 On peut voir que les courbes sont assez proche en température à certains endroits. Savukoski Kirkonkyla est une ville nordique donc on peut en déduire que notre ville mystère est une ville avec un climat de type continental.
 
-![plot](./img_readme/savukoski_kirkonkyla.png)
 
 On se rend aussi compte que la différence de moyenne de température est d'à peu près 54 degrés sur tout l'année 
 
