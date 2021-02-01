@@ -54,7 +54,35 @@ plt.plot(liste)
 mplcursors.cursor()
 plt.show()
 
-#Recherche d'une capital ressemblant à notre ville mystère
+#Comparaison avec Savukoski kirkonkyla
+data_savukoski = pd.read_excel("./graph/Savukoski kirkonkyla.xlsx",sheet_name='Observation data')
+df_savukoski = pd.DataFrame(data_savukoski)
+df_savukoski['Jours'] = range(1, len(df_savukoski) + 1)
+df_savukoski.plot(x ='Jours', y='Air temperature (degC)',label='Savukoski Kirkonkyla', color='black')
+plt.plot(liste,label='Notre ville mystère',color='red')
+plt.xlabel('Jours de l\'année')
+plt.ylabel('Température (°C)')
+plt.title('Evolution des températures de nos deux villes')
+legend = plt.legend(loc='lower right', shadow=True, fontsize='x-large')
+legend.get_frame().set_facecolor('C0')
+mplcursors.cursor()
+plt.show()
+
+#Différence de moyenne de température sur l'année
+temp_mini = 100
+ville = ""
+for i in df_savukoski:
+    curr_temp = list(df_savukoski.groupby("m")['Air temperature (degC)'].mean())
+    index = 0
+    total_temp = 0
+    for temp in curr_temp :
+        total_temp += abs(average[index]-temp)
+        index +=1
+print('Diff = ' + str(total_temp) + ' °C')
+
+
+
+#Recherche d'une capitale ressemblant à notre ville mystère
 df_capitale = pd.read_csv("./graph/city_temperature.csv")
 df_capitale = df_capitale.drop_duplicates()
 
@@ -86,6 +114,7 @@ chosen_one.plot(x ='Jours', y='AvgTemperature',label=ville,color='black')
 plt.plot(liste,label='Notre ville mystère',color='red')
 plt.xlabel('Jours de l\'année')
 plt.ylabel('Température (°C)')
+plt.title('Evolution des températures de nos deux villes')
 legend = plt.legend(loc='lower right', shadow=True, fontsize='x-large')
 legend.get_frame().set_facecolor('C0')
 mplcursors.cursor()
