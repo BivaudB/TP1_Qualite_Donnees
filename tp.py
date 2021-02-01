@@ -107,8 +107,8 @@ for i in df_capitale.groupby("City") :
         temp_mini = total_temp
         ville = i[0]
         ranking_city.append([ville,temp_mini])
-        df = pd.DataFrame(ranking_city, columns =['City', 'Diff °C'])
-ax = df.plot.bar(x='City', y='Diff °C', rot=0)
+        df_ranking = pd.DataFrame(ranking_city, columns =['City', 'Diff °C'])
+ax = df_ranking.plot.bar(x='City', y='Diff °C', rot=0)
 plt.title('Classement des villes selon la différence de température')
 mplcursors.cursor()
 plt.show()   
@@ -129,3 +129,22 @@ legend.get_frame().set_facecolor('C0')
 mplcursors.cursor()
 plt.show()
 
+
+ranking_city_std = []
+for i in df_capitale.groupby("City") :
+    df_city = pd.DataFrame(i[1])
+    curr_temp = list(df_city.groupby("Month")['AvgTemperature'].std())
+    index = 0
+    total_temp = 0
+    for temp in curr_temp :
+        total_temp += abs(st_deviation[index]-temp)
+        index +=1
+    if(temp_mini > total_temp) :
+        temp_mini = total_temp
+        ville = i[0]
+        ranking_city_std.append([ville,temp_mini])
+        df_ranking = pd.DataFrame(ranking_city_std, columns =['City', 'Diff °C'])
+ax5 = df_ranking.plot.bar(x='City', y='Diff °C', rot=0)
+plt.title('Classement des villes selon la différence de température')
+mplcursors.cursor()
+plt.show()  
