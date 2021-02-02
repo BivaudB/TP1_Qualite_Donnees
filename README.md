@@ -149,7 +149,7 @@ On se rend aussi compte que la différence de moyenne de température est d'à p
 
 ## Recherche de la ville selon la température
 
-Nous avons récupéré un jeu de données regroupant les **températures** de **chaque jour depuis 1995** pour tout un ensemble de **villes** à partir de ce [lien kaggle](https://www.kaggle.com/sudalairajkumar/daily-temperature-of-major-cities)
+Nous avons récupéré un jeu de données regroupant les **températures** de **chaque jour depuis 1995** pour tout un ensemble de **villes** à partir de ce [lien kaggle](https://www.kaggle.com/sudalairajkumar/daily-temperature-of-major-cities), puis nous avons effectués un ensemble de comparaisons par rapport à notre jeu de données de la **ville mystère**.
 
 * Import de ce dernier échantillon :
 
@@ -212,6 +212,79 @@ mplcursors.cursor()
 plt.show()
 ```
 
-* Aperçu de **ce résultat** : Moscou
+* Aperçu de **ce résultat** : Oslo
 
-![plot](./img_readme/resultat_ville_mystere.png)
+![plot](./img_readme/Oslo_ville_mystere.png)
+
+* Nous avons aussi comparé par ailleurs réalisé un classement des villes selon les technique de comparaisons
+
+***
+
+* Classement de comparaison par la moyenne :
+
+```python
+ax = df_ranking.plot.bar(x='City', y='Diff °C', rot=0)
+plt.title('Classement des villes selon la différence de température')
+mplcursors.cursor()
+plt.show()   
+```
+
+* Aperçu du **classement des moyennes** :
+
+![plot](./img_readme/Moyenne_temp_mystere.png)
+
+***
+
+* Classement de comparaison par l'écart-type :
+
+```python
+ranking_city_std = []
+for i in df_capitale.groupby("City") :
+    df_city = pd.DataFrame(i[1])
+    curr_temp = list(df_city.groupby("Month")['AvgTemperature'].std())
+    index = 0
+    total_temp = 0
+    for temp in curr_temp :
+        total_temp += abs(st_deviation[index]-temp)
+        index +=1
+    if(temp_mini > total_temp) :
+        temp_mini = total_temp
+        ville = i[0]
+        ranking_city_std.append([ville,temp_mini])
+        df_ranking = pd.DataFrame(ranking_city_std, columns =['City', 'Diff °C'])
+ax5 = df_ranking.plot.bar(x='City', y='Diff °C', rot=0)
+plt.title('Classement des villes selon l\'ecart-type')
+mplcursors.cursor()
+plt.show() 
+```
+
+* Aperçu du **classement de l'écart-type** :
+
+![plot](./img_readme/Ecart_type_mystere.png)
+
+***
+
+* Classement de comparaison par jour :
+
+```python
+ranking_city_day = []
+for i in df_capitale.groupby("City"):
+    df_city = pd.DataFrame(i[1])
+    curr_temp = list(df_city['AvgTemperature'])
+    total_temp = 0
+    for index in range(0, len(liste)):
+        total_temp += abs(liste[index]-curr_temp[index])
+        if(temp_mini > total_temp) :
+            temp_mini = total_temp
+            ville = i[0]
+            ranking_city_day.append([ville,temp_mini])
+df_ranking = pd.DataFrame(ranking_city_day, columns =['City', 'Diff °C'])
+ax5 = df_ranking.plot.bar(x='City', y='Diff °C', rot=0)
+plt.title('Classement des villes selon la différence de température par jours')
+mplcursors.cursor()
+plt.show()
+```
+
+* Aperçu du **classement par jour** :
+
+![plot](./img_readme/temp_par_jour_mystere.png)
