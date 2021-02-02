@@ -90,6 +90,10 @@ df_capitale = df_capitale[df_capitale.Year == 2018]
 df_capitale = df_capitale[df_capitale.Region == 'Europe']
 df_capitale = df_capitale.drop(['Region','State','Year'],1)
 
+for day in range(len(df_capitale.iloc[:, 4])):
+    if df_capitale.iloc[day, 4] < -50 :
+        df_capitale.iloc[day, 4] = (df_capitale.iloc[day+1, 4] + df_capitale.iloc[day-1, 4])/2
+
 #Récupération de la capitale la plus proche niveau température avec la ville mystère
 df_capitale["AvgTemperature"] = (df_capitale["AvgTemperature"] - 32)/1.8
 temp_mini = 100
@@ -113,10 +117,6 @@ plt.title('Classement des villes selon la différence de température')
 mplcursors.cursor()
 plt.show()   
 print(str(ville) +' '+ str(temp_mini))
-for day in range(len(df_capitale.iloc[:, 4])):
-    if df_capitale.iloc[day, 4] < -50 :
-        df_capitale.iloc[day, 4] = (df_capitale.iloc[day+1, 4] + df_capitale.iloc[day-1, 4])/2
-
 chosen_one = df_capitale[df_capitale.City == ville]
 chosen_one['Jours'] = range(1, len(chosen_one) + 1)
 chosen_one.plot(x ='Jours', y='AvgTemperature',label=ville,color='black')
@@ -129,7 +129,7 @@ legend.get_frame().set_facecolor('C0')
 mplcursors.cursor()
 plt.show()
 
-
+#Comparaison avec l'ecart-type
 ranking_city_std = []
 for i in df_capitale.groupby("City") :
     df_city = pd.DataFrame(i[1])
@@ -145,6 +145,25 @@ for i in df_capitale.groupby("City") :
         ranking_city_std.append([ville,temp_mini])
         df_ranking = pd.DataFrame(ranking_city_std, columns =['City', 'Diff °C'])
 ax5 = df_ranking.plot.bar(x='City', y='Diff °C', rot=0)
-plt.title('Classement des villes selon la différence de température')
+plt.title('Classement des villes selon l\'ecart-type')
+mplcursors.cursor()
+plt.show()  
+
+
+#Comparaison avec les températures par jour
+ranking_city_day = []
+for i in df_capitale.groupby("City"):
+    df_city = pd.DataFrame(i[1])
+    curr_temp = list(df_city['AvgTemperature'])
+    total_temp = 0
+    for index in range(0, len(liste)):
+        total_temp += abs(liste[index]-curr_temp[index])
+        if(temp_mini > total_temp) :
+            temp_mini = total_temp
+            ville = i[0]
+            ranking_city_day.append([ville,temp_mini])
+df_ranking = pd.DataFrame(ranking_city_day, columns =['City', 'Diff °C'])
+ax5 = df_ranking.plot.bar(x='City', y='Diff °C', rot=0)
+plt.title('Classement des villes selon la différence de température par jours')
 mplcursors.cursor()
 plt.show()  
