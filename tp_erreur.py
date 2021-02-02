@@ -39,18 +39,20 @@ print(min_max)
 #Courbe pour chaque mois
 month_filter = 0
 liste = []
-for month in range(len(df.count())-1):
+for month in range(len(df.count())):
     plt.suptitle(names[month_filter])
-    month_filter = month_filter+1
     plt.xlabel('Jours')
     plt.ylabel('Température (°C)')
     plt.plot(df.iloc[:, month_filter])
     mplcursors.cursor()
     plt.show()
-    for day in range(len(df.iloc[:, month_filter])):
+    month_filter = month_filter+1
+    for day in range(len(df.iloc[:, month_filter-1])):
         plt.xlabel('Jours de l\'année')
         plt.ylabel('Température (°C)')
-        liste.append(df.iloc[day, month_filter])
+        liste.append(df.iloc[day, month_filter-1])
+        liste = [x for x in liste if str(x) != 'nan']
+plt.title('Evolution annuelle de la température')
 plt.plot(liste)
 mplcursors.cursor()
 plt.show()
