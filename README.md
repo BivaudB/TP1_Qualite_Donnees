@@ -112,6 +112,18 @@ for month in range(len(df.count())):
 
 ***
 
+* Pic de températures modifié pour être en accord avec le fichier sans erreur
+
+```python
+for month in range(len(df.count())):
+    average_month = np.mean(df.iloc[:, month])
+    for day in range(len(df.iloc[:, month])):
+        if np.abs(average_month-df.iloc[day, month]) > 15:
+            df.iloc[day, month] = (df.iloc[day+1, month] + df.iloc[day-1, month])/2
+```
+
+![plot](./img_readme/vue_annuelle_erreur_2.png)
+
 Les **données corrigés** restent globalement proches des valeurs sans erreur, avec quelques exceptions.
 
 # Comparaison avec Savukoski Kirkonkyla
@@ -216,7 +228,7 @@ plt.show()
 
 ![plot](./img_readme/Oslo_ville_mystere.png)
 
-* Nous avons aussi comparé par ailleurs réalisé un classement des villes selon les technique de comparaisons
+* Nous avons par ailleurs réalisé un classement des villes selon les techniques de comparaisons
 
 ***
 
@@ -288,3 +300,5 @@ plt.show()
 * Aperçu du **classement par jour** :
 
 ![plot](./img_readme/temp_par_jour_mystere.png)
+
+* On peut voir que nous avons trois résultat différent, Il faut donc prendre avec des pincettes ces résultats. Mais ce qui est sûre , c'est que notre ville mystère est une ville de pays nordique.
